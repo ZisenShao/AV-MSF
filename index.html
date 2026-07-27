@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Objects as Audio-Visual Modal Sound Fields</title>
+    <meta
+        name="description"
+        content="AV-MSF reconstructs an object's modal impact-sound field from multi-view images and only a few impact recordings."
+    >
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Objects as Audio-Visual Modal Sound Fields">
+    <meta
+        property="og:description"
+        content="A geometry-aware, physically meaningful representation for few-shot impact sound reconstruction."
+    >
+    <meta property="og:image" content="data/teaser.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Objects as Audio-Visual Modal Sound Fields">
+    <meta
+        name="twitter:description"
+        content="A geometry-aware, physically meaningful representation for few-shot impact sound reconstruction."
+    >
+    <meta name="twitter:image" content="data/teaser.png">
+
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&amp;family=Varela+Round&amp;display=swap"
+        rel="stylesheet"
+    >
+    <link href="style.css" rel="stylesheet">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <header class="paper-header">
+        <h1 class="title">Objects as Audio-Visual Modal Sound Fields</h1>
+
+        <div class="authors" aria-label="Authors">
+            <a class="author-text" href="https://zisenshao.github.io/" target="_blank" rel="noopener">
+                <strong>Zisen Shao*</strong>
+            </a>
+            <a class="author-text" href="https://zi-hao-wei.github.io/" target="_blank" rel="noopener">
+                <strong>Zihao Wei*</strong>
+            </a>
+            <a class="author-text" href="https://humathe.github.io/" target="_blank" rel="noopener">
+                <strong>Derong Jin</strong>
+            </a>
+            <a class="author-text" href="https://ruohangao.github.io/" target="_blank" rel="noopener">
+                <strong>Ruohan Gao</strong>
+            </a>
+        </div>
+
+        <p class="affiliation">University of Maryland, College Park</p>
+        <p class="equal-contribution">* Equal contribution</p>
+
+        <div class="title-row">
+            <h2 class="subheader">ECCV 2026</h2>
+        </div>
+
+        <div class="base-row add-top-padding" aria-label="Project links">
+            <div class="link-block" aria-disabled="true">
+                <figure>
+                    <img
+                        src="https://uploads-ssl.webflow.com/51e0d73d83d06baa7a00000f/5cab99df4998decfbf9e218e_paper-01.png"
+                        alt="paper"
+                        srcset="https://uploads-ssl.webflow.com/51e0d73d83d06baa7a00000f/5cab99df4998decfbf9e218e_paper-01-p-500.png"
+                        style="max-height: 4em"
+                    >
+                </figure>
+                <figcaption>
+                    <strong class="link-labels-text">Paper</strong>
+                </figcaption>
+            </div>
+            <div class="link-block" aria-disabled="true">
+                <figure>
+                    <img
+                        src="https://uploads-ssl.webflow.com/51e0d73d83d06baa7a00000f/5cae3b53b42ebb3dd4175a82_68747470733a2f2f7777772e69636f6e66696e6465722e636f6d2f646174612f69636f6e732f6f637469636f6e732f313032342f6d61726b2d6769746875622d3235362e706e67.png"
+                        alt="code"
+                        style="max-height: 4em"
+                    >
+                </figure>
+                <figcaption>
+                    <strong class="link-labels-text">&lt;/Code&gt;</strong>
+                </figcaption>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="section teaser-section" aria-label="Teaser">
+            <figure>
+                <img
+                    class="paper-figure"
+                    src="data/teaser.png"
+                    width="2863"
+                    height="1196"
+                    alt="AV-MSF teaser showing audio-visual priors, vibration modes, and downstream applications"
+                    fetchpriority="high"
+                    decoding="async"
+                >
+                <figcaption class="figure-caption">
+                    Audio-Visual Modal Sound Field (AV-MSF) is a physically-grounded object-level acoustic representation,
+                    reconstructed from multi-view images and few-shot impact recordings.
+                    It leverages the insight that visually similar object regions exhibit similar
+                    vibration patterns. AV-MSF enables diverse applications, including
+                    novel-position impact sound synthesis, contact localization, and object sound
+                    editing.
+                </figcaption>
+            </figure>
+        </section>
+
+        <section class="section" id="abstract">
+            <h2 class="section-title">Abstract</h2>
+            <p class="paragraph">
+                While modern 3D reconstruction excels at modeling object geometry and appearance,
+                it largely ignores the rich acoustic cues revealed through physical interaction.
+                Object impact sounds convey material, stiffness, and structural properties that
+                complement vision, yet existing impact sound modeling approaches either rely on
+                expensive physics-based simulation or require large datasets to generalize in a
+                purely data-driven manner. We introduce Audio-Visual Modal Sound Field (AV-MSF), a
+                novel object-level acoustic representation reconstructed from multi-view images and
+                only a few impact sound recordings. AV-MSF builds on 3D Gaussian Splatting
+                integrated with dense 3D visual feature to provide a strong geometry-aware prior,
+                and represents the impact sound field using compact, physically meaningful modal
+                parameters, enabling robust few-shot reconstruction. Experiments on two real-world
+                datasets show that AV-MSF achieves state-of-the-art impact sound rendering,
+                outperforming both physics-based and data-driven baselines. Furthermore, we
+                demonstrate downstream applications enabled by our representation, including
+                contact localization and object sound editing.
+            </p>
+        </section>
+
+        <section class="section" id="interactive-demo">
+            <h2 class="section-title">Interactive Demo</h2>
+            <div class="demo-stage" aria-live="polite">
+                <p class="demo-move-hint">
+                    <img
+                        class="move-icon"
+                        src="data/drag_icon.png"
+                        width="240"
+                        height="240"
+                        alt=""
+                        aria-hidden="true"
+                        draggable="false"
+                    >
+                    Click and move me!
+                    <img
+                        class="move-icon"
+                        src="data/drag_icon.png"
+                        width="240"
+                        height="240"
+                        alt=""
+                        aria-hidden="true"
+                        draggable="false"
+                    >
+                </p>
+                <p id="demo-stage-label">Object 01 · Impact Sound Rendering placeholder</p>
+
+                <div class="demo-switcher" role="group" aria-label="Interactive demo mode">
+                    <button
+                        class="demo-switcher-button active"
+                        type="button"
+                        data-mode="Impact Sound Rendering"
+                        aria-pressed="true"
+                    >
+                        Impact Sound Rendering
+                    </button>
+                    <button
+                        class="demo-switcher-button"
+                        type="button"
+                        data-mode="Contact Localization"
+                        aria-pressed="false"
+                    >
+                        Contact Localization
+                    </button>
+                    <button
+                        class="demo-switcher-button"
+                        type="button"
+                        data-mode="Sound Editing"
+                        aria-pressed="false"
+                    >
+                        Sound Editing
+                    </button>
+                </div>
+            </div>
+
+            <div class="object-carousel" aria-label="Interactive demo objects">
+                <button
+                    class="carousel-arrow"
+                    id="carousel-prev"
+                    type="button"
+                    aria-label="Previous objects"
+                >
+                    &#8249;
+                </button>
+
+                <div class="carousel-viewport" id="object-carousel-viewport">
+                    <div class="carousel-track">
+                        <button class="object-card active" type="button" data-name="Object 01">
+                            <span class="object-image-placeholder" role="img" aria-label="Object 01 image placeholder">
+                                Image
+                            </span>
+                            <span class="object-name">Object 01</span>
+                        </button>
+                        <button class="object-card" type="button" data-name="Object 02">
+                            <span class="object-image-placeholder" role="img" aria-label="Object 02 image placeholder">
+                                Image
+                            </span>
+                            <span class="object-name">Object 02</span>
+                        </button>
+                        <button class="object-card" type="button" data-name="Object 03">
+                            <span class="object-image-placeholder" role="img" aria-label="Object 03 image placeholder">
+                                Image
+                            </span>
+                            <span class="object-name">Object 03</span>
+                        </button>
+                        <button class="object-card" type="button" data-name="Object 04">
+                            <span class="object-image-placeholder" role="img" aria-label="Object 04 image placeholder">
+                                Image
+                            </span>
+                            <span class="object-name">Object 04</span>
+                        </button>
+                        <button class="object-card" type="button" data-name="Object 05">
+                            <span class="object-image-placeholder" role="img" aria-label="Object 05 image placeholder">
+                                Image
+                            </span>
+                            <span class="object-name">Object 05</span>
+                        </button>
+                        <button class="object-card" type="button" data-name="Object 06">
+                            <span class="object-image-placeholder" role="img" aria-label="Object 06 image placeholder">
+                                Image
+                            </span>
+                            <span class="object-name">Object 06</span>
+                        </button>
+                        <button class="object-card" type="button" data-name="Object 07">
+                            <span class="object-image-placeholder" role="img" aria-label="Object 07 image placeholder">
+                                Image
+                            </span>
+                            <span class="object-name">Object 07</span>
+                        </button>
+                        <button class="object-card" type="button" data-name="Object 08">
+                            <span class="object-image-placeholder" role="img" aria-label="Object 08 image placeholder">
+                                Image
+                            </span>
+                            <span class="object-name">Object 08</span>
+                        </button>
+                    </div>
+                </div>
+
+                <button
+                    class="carousel-arrow"
+                    id="carousel-next"
+                    type="button"
+                    aria-label="Next objects"
+                >
+                    &#8250;
+                </button>
+            </div>
+        </section>
+
+        <section class="section" id="how-it-works">
+            <h2 class="section-title">How it works</h2>
+            <p class="paragraph">
+                Given multi-view image observations and few-shot impact recordings, our framework
+                reconstructs an audio-visual modal sound field.
+            </p>
+            <figure>
+                <img
+                    class="paper-figure"
+                    src="data/method.png"
+                    width="3038"
+                    height="1043"
+                    alt="Overview of the AV-MSF reconstruction framework"
+                    loading="lazy"
+                    decoding="async"
+                >
+            </figure>
+            <div class="method-steps">
+                <p>
+                    <strong>Visual Processing.</strong> We extract dense features with a pre-trained
+                    vision encoder and lift them into a 3D Gaussian Splatting (3DGS) representation
+                    to form a geometry-aware visual feature field.
+                </p>
+                <p>
+                    <strong>Acoustic Processing.</strong> We extract modal parameters from a few
+                    reference recordings to initialize optimization, and model unmodeled
+                    environmental noise with a residual component.
+                </p>
+                <p>
+                    <strong>AV-MSF Reconstruction.</strong> We jointly optimize global modal
+                    frequencies and dampings, residual noise, and an implicit spatially varying
+                    neural gain field, guided by the visual feature field.
+                </p>
+            </div>
+        </section>
+
+        <section class="section" id="spectrogram-comparison">
+            <h2 class="section-title">Impact Sound Spectrogram Comparison</h2>
+            <p class="paragraph">
+                Comparison of rendered impact sounds from DiffSound, SonicGauss, AV-MSF and
+                the ground truth. Our method yields faithful spectral structures while
+                remaining position-aware.
+            </p>
+            <img
+                class="paper-figure"
+                src="data/mel_compare.png"
+                width="3657"
+                height="2305"
+                alt="Impact sound spectrogram comparisons across objects and contact locations"
+                loading="lazy"
+                decoding="async"
+            >
+        </section>
+
+        <section class="section" id="contact-localization">
+            <h2 class="section-title">Contact Localization</h2>
+            <p class="paragraph">
+                AV-MSF localizes a novel impact by matching its mode parameters against the
+                learned sound field. Red arrows indicate ground-truth impact locations, and
+                blue arrows indicate predictions.
+            </p>
+            <img
+                class="paper-figure"
+                src="data/contact.png"
+                width="3373"
+                height="2580"
+                alt="Contact localization results with ground-truth and predicted impact locations"
+                loading="lazy"
+                decoding="async"
+            >
+        </section>
+
+        <section class="section" id="limitations">
+            <h2 class="section-title">Limitations and Failures</h2>
+
+            <article class="failure-case">
+                <h3>Impact Sound Reconstruction</h3>
+                <p class="paragraph">
+                    Rendering may fail near sharp geometric changes when the few-shot training set
+                    contains no contacts with similar local geometry. Missing representative
+                    observations can result in overly short damping.
+                </p>
+                <img
+                    class="paper-figure"
+                    src="data/mel_compare_failure.png"
+                    width="3565"
+                    height="540"
+                    alt="Impact sound reconstruction failure cases near sharp geometric changes"
+                    loading="lazy"
+                    decoding="async"
+                >
+            </article>
+
+            <article class="failure-case">
+                <h3>Contact Localization</h3>
+                <p class="paragraph">
+                    Contact localization remains challenging for highly symmetric or small objects.
+                    Symmetric regions may share similar modal parameters despite being far apart,
+                    while simple vibration modes can make different contact locations sound alike.
+                </p>
+                <img
+                    class="paper-figure"
+                    src="data/contact_failure.png"
+                    width="3410"
+                    height="1155"
+                    alt="Contact localization failure cases on symmetric and small objects"
+                    loading="lazy"
+                    decoding="async"
+                >
+            </article>
+        </section>
+
+        <section class="section citation" id="citation" style="margin-top: 50px">
+            <h1>Citation </h1>
+            <pre id="codecell0">@inproceedings{shao2026avmsf,
+  title={Objects as Audio-Visual Modal Sound Fields},
+  author={Zisen Shao and Zihao Wei and Derong Jin and Ruohan Gao},
+  booktitle={European Conference on Computer Vision},
+  year={2026}
+}</pre>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <p>
+            The website template is from the
+            <strong>
+                <a href="https://robot-see-robot-do.github.io/" target="_blank" rel="noopener">
+                    Robot See Robot Do
+                </a>
+            </strong>
+            project page.
+        </p>
+    </footer>
+</body>
+</html>
