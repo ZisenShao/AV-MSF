@@ -1,0 +1,32 @@
+{
+  "audio": {
+    "duration_seconds": 3.0
+  },
+  "modal": {
+    "uri": "modal.bin",
+    "arrays": {
+      "frequencies": {
+        "dtype": "float32",
+        "shape": [
+          96
+        ],
+        "byte_offset": 0
+      },
+      "gains": {
+        "dtype": "float16",
+        "shape": [
+          5392,
+          96
+        ],
+        "byte_offset": 384
+      },
+      "dampings": {
+        "dtype": "float32",
+        "shape": [
+          96
+        ],
+        "byte_offset": 1035648
+      }
+    }
+  }
+}

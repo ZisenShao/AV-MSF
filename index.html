@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="data/favicon.png">
     <title>Objects as Audio-Visual Modal Sound Fields</title>
     <meta
         name="description"
@@ -29,12 +30,23 @@
         href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&amp;family=Varela+Round&amp;display=swap"
         rel="stylesheet"
     >
-    <link href="style.css" rel="stylesheet">
-    <script src="script.js" defer></script>
+    <link href="style.css?v=20260804-3" rel="stylesheet">
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/",
+                "@mkkellogg/gaussian-splats-3d": "https://cdn.jsdelivr.net/npm/@mkkellogg/gaussian-splats-3d@0.4.7/build/gaussian-splats-3d.module.js"
+            }
+        }
+    </script>
+    <script type="module" src="interactive-demo.js?v=20260804-3"></script>
 </head>
 <body>
     <header class="paper-header">
-        <h1 class="title">Objects as Audio-Visual Modal Sound Fields</h1>
+        <h1 class="title">
+            <span class="title-line">Objects as Audio-Visual Modal Sound Fields</span>
+        </h1>
 
         <div class="authors" aria-label="Authors">
             <a class="author-text" href="https://zisenshao.github.io/" target="_blank" rel="noopener">
@@ -81,7 +93,7 @@
                     >
                 </figure>
                 <figcaption>
-                    <strong class="link-labels-text">&lt;/Code&gt;</strong>
+                    <strong class="link-labels-text">Code</strong>
                 </figcaption>
             </div>
         </div>
@@ -133,8 +145,15 @@
 
         <section class="section" id="interactive-demo">
             <h2 class="section-title">Interactive Demo</h2>
-            <div class="demo-stage" aria-live="polite">
-                <p class="demo-move-hint">
+            <div class="demo-stage" id="demo-stage">
+                <div
+                    class="demo-viewer"
+                    id="demo-viewer"
+                    aria-label="Interactive 3D Gaussian splat viewer"
+                    hidden
+                ></div>
+
+                <p class="demo-move-hint" id="demo-move-hint" hidden>
                     <img
                         class="move-icon"
                         src="data/drag_icon.png"
@@ -144,7 +163,7 @@
                         aria-hidden="true"
                         draggable="false"
                     >
-                    Click and move me!
+                    <span id="demo-move-hint-text">Drag to rotate · Click to impact</span>
                     <img
                         class="move-icon"
                         src="data/drag_icon.png"
@@ -155,13 +174,72 @@
                         draggable="false"
                     >
                 </p>
-                <p id="demo-stage-label">Object 01 · Impact Sound Rendering placeholder</p>
+                <div
+                    class="contact-impact-controls"
+                    id="contact-impact-controls"
+                    role="group"
+                    aria-label="Contact localization impact recordings"
+                    hidden
+                >
+                    <p class="contact-impact-title">Impact recordings</p>
+                    <button
+                        class="contact-impact-button"
+                        type="button"
+                        data-contact-slot="0"
+                        aria-pressed="false"
+                    >
+                        <span class="contact-play-icon" aria-hidden="true">&#9654;</span>
+                        <span class="contact-impact-label">Impact</span>
+                    </button>
+                    <button
+                        class="contact-impact-button"
+                        type="button"
+                        data-contact-slot="1"
+                        aria-pressed="false"
+                    >
+                        <span class="contact-play-icon" aria-hidden="true">&#9654;</span>
+                        <span class="contact-impact-label">Impact</span>
+                    </button>
+                    <div
+                        class="contact-legend"
+                        role="note"
+                        aria-label="Contact localization legend"
+                    >
+                        <p>
+                            <span class="contact-diamond contact-diamond-gt" aria-hidden="true"></span>
+                            Green diamond: GT
+                        </p>
+                        <p>
+                            <span class="contact-diamond contact-diamond-pred" aria-hidden="true"></span>
+                            Blue diamond: Pred
+                        </p>
+                        <p class="contact-heatmap-description">
+                            <span class="contact-heatmap" aria-hidden="true"></span>
+                            <span>Heatmap: redder means higher probability; bluer means lower.</span>
+                        </p>
+                    </div>
+                </div>
+                <div
+                    class="sound-edit-legend"
+                    id="sound-edit-legend"
+                    role="note"
+                    aria-label="Sound editing material conversion"
+                    hidden
+                >
+                    <p class="sound-edit-legend-title">Sound Editing</p>
+                    <p class="sound-edit-materials">
+                        <span id="sound-edit-source-material"></span>
+                        <span class="sound-edit-arrow" aria-hidden="true">&rarr;</span>
+                        <span id="sound-edit-target-material"></span>
+                    </p>
+                </div>
+                <div class="impact-marker" id="impact-marker" hidden></div>
 
                 <div class="demo-switcher" role="group" aria-label="Interactive demo mode">
                     <button
                         class="demo-switcher-button active"
                         type="button"
-                        data-mode="Impact Sound Rendering"
+                        data-demo-mode="impact"
                         aria-pressed="true"
                     >
                         Impact Sound Rendering
@@ -169,98 +247,181 @@
                     <button
                         class="demo-switcher-button"
                         type="button"
-                        data-mode="Contact Localization"
+                        data-demo-mode="contact"
                         aria-pressed="false"
+                        aria-controls="contact-impact-controls"
                     >
                         Contact Localization
                     </button>
                     <button
                         class="demo-switcher-button"
                         type="button"
-                        data-mode="Sound Editing"
+                        data-demo-mode="editing"
                         aria-pressed="false"
+                        aria-controls="sound-edit-legend"
                     >
                         Sound Editing
                     </button>
                 </div>
             </div>
 
-            <div class="object-carousel" aria-label="Interactive demo objects">
+            <div class="object-grid" aria-label="Interactive demo objects">
                 <button
-                    class="carousel-arrow"
-                    id="carousel-prev"
+                    class="object-card active"
                     type="button"
-                    aria-label="Previous objects"
+                    data-name="Object 6"
+                    data-original-material="Glass"
+                    data-edited-material="Wood"
+                    data-demo-path="data/demo/6"
+                    data-demo-variant="damp_false"
+                    data-camera-direction="0,-1,1"
+                    data-contact-impacts="017,027"
+                    aria-label="Load Object 6 interactive demo"
+                    aria-pressed="true"
                 >
-                    &#8249;
+                    <img class="object-thumbnail" src="data/demo/6/image.png" alt="Thumbnail preview for Object 6" width="800" height="800" loading="lazy" decoding="async">
                 </button>
-
-                <div class="carousel-viewport" id="object-carousel-viewport">
-                    <div class="carousel-track">
-                        <button class="object-card active" type="button" data-name="Object 01">
-                            <span class="object-image-placeholder" role="img" aria-label="Object 01 image placeholder">
-                                Image
-                            </span>
-                            <span class="object-name">Object 01</span>
-                        </button>
-                        <button class="object-card" type="button" data-name="Object 02">
-                            <span class="object-image-placeholder" role="img" aria-label="Object 02 image placeholder">
-                                Image
-                            </span>
-                            <span class="object-name">Object 02</span>
-                        </button>
-                        <button class="object-card" type="button" data-name="Object 03">
-                            <span class="object-image-placeholder" role="img" aria-label="Object 03 image placeholder">
-                                Image
-                            </span>
-                            <span class="object-name">Object 03</span>
-                        </button>
-                        <button class="object-card" type="button" data-name="Object 04">
-                            <span class="object-image-placeholder" role="img" aria-label="Object 04 image placeholder">
-                                Image
-                            </span>
-                            <span class="object-name">Object 04</span>
-                        </button>
-                        <button class="object-card" type="button" data-name="Object 05">
-                            <span class="object-image-placeholder" role="img" aria-label="Object 05 image placeholder">
-                                Image
-                            </span>
-                            <span class="object-name">Object 05</span>
-                        </button>
-                        <button class="object-card" type="button" data-name="Object 06">
-                            <span class="object-image-placeholder" role="img" aria-label="Object 06 image placeholder">
-                                Image
-                            </span>
-                            <span class="object-name">Object 06</span>
-                        </button>
-                        <button class="object-card" type="button" data-name="Object 07">
-                            <span class="object-image-placeholder" role="img" aria-label="Object 07 image placeholder">
-                                Image
-                            </span>
-                            <span class="object-name">Object 07</span>
-                        </button>
-                        <button class="object-card" type="button" data-name="Object 08">
-                            <span class="object-image-placeholder" role="img" aria-label="Object 08 image placeholder">
-                                Image
-                            </span>
-                            <span class="object-name">Object 08</span>
-                        </button>
-                    </div>
-                </div>
-
                 <button
-                    class="carousel-arrow"
-                    id="carousel-next"
+                    class="object-card"
                     type="button"
-                    aria-label="Next objects"
+                    data-name="Object 24"
+                    data-original-material="Plastic"
+                    data-edited-material="Wood"
+                    data-demo-path="data/demo/24"
+                    data-demo-variant="damp_true"
+                    data-contact-impacts="000,012"
+                    aria-label="Load Object 24 interactive demo"
+                    aria-pressed="false"
                 >
-                    &#8250;
+                    <img class="object-thumbnail" src="data/demo/24/image.png" alt="Thumbnail preview for Object 24" width="800" height="800" loading="lazy" decoding="async">
+                </button>
+                <button
+                    class="object-card"
+                    type="button"
+                    data-name="Object 80"
+                    data-original-material="Ceramic"
+                    data-edited-material="Wood"
+                    data-demo-path="data/demo/80"
+                    data-demo-variant="damp_true"
+                    data-camera-direction="0,-1,1"
+                    data-contact-impacts="008,016"
+                    aria-label="Load Object 80 interactive demo"
+                    aria-pressed="false"
+                >
+                    <img class="object-thumbnail" src="data/demo/80/image.png" alt="Thumbnail preview for Object 80" width="800" height="800" loading="lazy" decoding="async">
+                </button>
+                <button
+                    class="object-card"
+                    type="button"
+                    data-name="Object 12"
+                    data-original-material="Wood"
+                    data-edited-material="Glass"
+                    data-demo-path="data/demo/12"
+                    data-demo-variant="damp_true"
+                    data-camera-direction="0,-1,1"
+                    data-contact-impacts="019,016"
+                    aria-label="Load Object 12 interactive demo"
+                    aria-pressed="false"
+                >
+                    <img class="object-thumbnail" src="data/demo/12/image.png" alt="Thumbnail preview for Object 12" width="800" height="800" loading="lazy" decoding="async">
+                </button>
+                <button
+                    class="object-card"
+                    type="button"
+                    data-name="Object 66"
+                    data-original-material="Iron"
+                    data-edited-material="Wood"
+                    data-demo-path="data/demo/66"
+                    data-demo-variant="damp_true"
+                    data-contact-impacts="029,019"
+                    aria-label="Load Object 66 interactive demo"
+                    aria-pressed="false"
+                >
+                    <img class="object-thumbnail" src="data/demo/66/image.png" alt="Thumbnail preview for Object 66" width="800" height="800" loading="lazy" decoding="async">
+                </button>
+                <button
+                    class="object-card"
+                    type="button"
+                    data-name="Object 2"
+                    data-original-material="Ceramic"
+                    data-edited-material="Wood"
+                    data-demo-path="data/demo/2"
+                    data-demo-variant="damp_true"
+                    data-camera-direction="0,-1,1"
+                    data-contact-impacts="001,006"
+                    aria-label="Load Object 2 interactive demo"
+                    aria-pressed="false"
+                >
+                    <img class="object-thumbnail" src="data/demo/2/image.png" alt="Thumbnail preview for Object 2" width="800" height="800" loading="lazy" decoding="async">
+                </button>
+                <button
+                    class="object-card"
+                    type="button"
+                    data-name="Object 95"
+                    data-original-material="Glass"
+                    data-edited-material="Wood"
+                    data-demo-path="data/demo/95"
+                    data-demo-variant="damp_true"
+                    data-camera-direction="0,-1,1"
+                    data-contact-impacts="012,036"
+                    aria-label="Load Object 95 interactive demo"
+                    aria-pressed="false"
+                >
+                    <img class="object-thumbnail" src="data/demo/95/image.png" alt="Thumbnail preview for Object 95" width="800" height="800" loading="lazy" decoding="async">
+                </button>
+                <button
+                    class="object-card"
+                    type="button"
+                    data-name="Object 70"
+                    data-original-material="Polycarbonate"
+                    data-edited-material="Wood"
+                    data-demo-path="data/demo/70"
+                    data-demo-variant="damp_false"
+                    data-camera-direction="0,-1,1"
+                    data-contact-impacts="008,019"
+                    aria-label="Load Object 70 interactive demo"
+                    aria-pressed="false"
+                >
+                    <img class="object-thumbnail" src="data/demo/70/image.png" alt="Thumbnail preview for Object 70" width="800" height="800" loading="lazy" decoding="async">
+                </button>
+                <button
+                    class="object-card"
+                    type="button"
+                    data-name="Object 14"
+                    data-original-material="Wood"
+                    data-edited-material="Glass"
+                    data-demo-path="data/demo/14"
+                    data-demo-variant="damp_true"
+                    data-camera-direction="0,-1,1"
+                    data-contact-impacts="028,009"
+                    aria-label="Load Object 14 interactive demo"
+                    aria-pressed="false"
+                >
+                    <img class="object-thumbnail" src="data/demo/14/image.png" alt="Thumbnail preview for Object 14" width="800" height="800" loading="lazy" decoding="async">
+                </button>
+                <button
+                    class="object-card"
+                    type="button"
+                    data-name="Object 75"
+                    data-original-material="Ceramic"
+                    data-edited-material="Wood"
+                    data-demo-path="data/demo/75"
+                    data-demo-variant="damp_true"
+                    data-camera-direction="0,-1,1"
+                    data-contact-impacts="042,005"
+                    aria-label="Load Object 75 interactive demo"
+                    aria-pressed="false"
+                >
+                    <img class="object-thumbnail" src="data/demo/75/image.png" alt="Thumbnail preview for Object 75" width="800" height="800" loading="lazy" decoding="async">
                 </button>
             </div>
+            <p class="object-training-note">
+                All objects are trained using only 20% of the available impact recordings.
+            </p>
         </section>
 
         <section class="section" id="how-it-works">
-            <h2 class="section-title">How it works</h2>
+            <h2 class="section-title">Method Overview</h2>
             <p class="paragraph">
                 Given multi-view image observations and few-shot impact recordings, our framework
                 reconstructs an audio-visual modal sound field.
@@ -296,7 +457,7 @@
         </section>
 
         <section class="section" id="spectrogram-comparison">
-            <h2 class="section-title">Impact Sound Spectrogram Comparison</h2>
+            <h2 class="section-title">Impact Sound Rendering</h2>
             <p class="paragraph">
                 Comparison of rendered impact sounds from DiffSound, SonicGauss, AV-MSF and
                 the ground truth. Our method yields faithful spectral structures while
@@ -307,7 +468,7 @@
                 src="data/mel_compare.png"
                 width="3657"
                 height="2305"
-                alt="Impact sound spectrogram comparisons across objects and contact locations"
+                alt="Impact sound rendering comparisons across objects and contact locations"
                 loading="lazy"
                 decoding="async"
             >
@@ -318,7 +479,8 @@
             <p class="paragraph">
                 AV-MSF localizes a novel impact by matching its mode parameters against the
                 learned sound field. Red arrows indicate ground-truth impact locations, and
-                blue arrows indicate predictions.
+                blue arrows indicate predictions. Predicted regions are shown with red
+                indicating high likelihood and blue indicating low likelihood.
             </p>
             <img
                 class="paper-figure"
@@ -332,21 +494,21 @@
         </section>
 
         <section class="section" id="limitations">
-            <h2 class="section-title">Limitations and Failures</h2>
+            <h2 class="section-title">Limitations and Failure Cases</h2>
 
             <article class="failure-case">
-                <h3>Impact Sound Reconstruction</h3>
+                <h3>Impact Sound Rendering</h3>
                 <p class="paragraph">
-                    Rendering may fail near sharp geometric changes when the few-shot training set
-                    contains no contacts with similar local geometry. Missing representative
-                    observations can result in overly short damping.
+                    Rendering may fail when the queried impact lie near regions with sharp geometric changes, 
+                    yet no training samples are collected from similar local geometries. 
+                    Thus performance is limited by the lack of representative training observations.
                 </p>
                 <img
                     class="paper-figure"
                     src="data/mel_compare_failure.png"
                     width="3565"
                     height="540"
-                    alt="Impact sound reconstruction failure cases near sharp geometric changes"
+                    alt=""
                     loading="lazy"
                     decoding="async"
                 >
@@ -355,16 +517,16 @@
             <article class="failure-case">
                 <h3>Contact Localization</h3>
                 <p class="paragraph">
-                    Contact localization remains challenging for highly symmetric or small objects.
-                    Symmetric regions may share similar modal parameters despite being far apart,
-                    while simple vibration modes can make different contact locations sound alike.
+                    Contact localization remains challenging for highly symmetric (Object 1) or small (Object 2) objects.
+                    Symmetric regions may share similar modal parameters despite being far apart. For small objects, 
+                    simple vibration modes can yield similar impact sounds across locations.
                 </p>
                 <img
                     class="paper-figure"
                     src="data/contact_failure.png"
                     width="3410"
                     height="1155"
-                    alt="Contact localization failure cases on symmetric and small objects"
+                    alt=""
                     loading="lazy"
                     decoding="async"
                 >
@@ -375,8 +537,8 @@
             <h1>Citation </h1>
             <pre id="codecell0">@inproceedings{shao2026avmsf,
   title={Objects as Audio-Visual Modal Sound Fields},
-  author={Zisen Shao and Zihao Wei and Derong Jin and Ruohan Gao},
-  booktitle={European Conference on Computer Vision},
+  author={Shao, Zisen and Wei, Zihao and Jin, Derong and Gao, Ruohan},
+  booktitle={European Conference on Computer Vision (ECCV)},
   year={2026}
 }</pre>
         </section>

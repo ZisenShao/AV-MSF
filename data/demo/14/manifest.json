@@ -1,0 +1,54 @@
+{
+  "n_gaussians": 6034,
+  "scene": {
+    "uri": "scene.ply"
+  },
+  "picking": {
+    "uri": "picking.bin",
+    "arrays": {
+      "means": {
+        "dtype": "float32",
+        "shape": [
+          6034,
+          3
+        ],
+        "byte_offset": 0
+      },
+      "scales": {
+        "dtype": "float32",
+        "shape": [
+          6034,
+          3
+        ],
+        "byte_offset": 72408
+      },
+      "quaternions": {
+        "dtype": "float32",
+        "shape": [
+          6034,
+          4
+        ],
+        "byte_offset": 144816
+      },
+      "opacities": {
+        "dtype": "float32",
+        "shape": [
+          6034
+        ],
+        "byte_offset": 241360
+      }
+    }
+  },
+  "default_variant": "damp_false",
+  "variants": {
+    "damp_false": {
+      "manifest": "damp_false/manifest.json"
+    },
+    "damp_true": {
+      "manifest": "damp_true/manifest.json"
+    },
+    "sound_edit": {
+      "manifest": "sound_edit/manifest.json"
+    }
+  }
+}
