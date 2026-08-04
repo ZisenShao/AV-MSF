@@ -2,6 +2,7 @@
     color-scheme: light;
     --accent: #488af3;
     --border: #d9d9d9;
+    --demo-background: radial-gradient(circle at 50% 42%, #fff 0, #f5f6f8 55%, #e9ebef 100%);
     --muted: #666;
     --page-max-width: 900px;
     --text: #333;
@@ -240,8 +241,7 @@ figure {
     overflow: hidden;
     border: 1px solid #d5d5d5;
     border-radius: 20px;
-    background:
-        radial-gradient(circle at 50% 42%, #fff 0, #f5f6f8 55%, #e9ebef 100%);
+    background: var(--demo-background);
 }
 
 .demo-stage > p {
@@ -539,21 +539,15 @@ figure {
     display: block;
     width: 9rem;
     height: 9rem;
-    padding: 0.45rem;
+    padding: 0rem;
     border: 2px solid transparent;
     border-radius: 14px;
-    background: transparent;
+    background: var(--demo-background);
     cursor: pointer;
-}
-
-.object-card:hover,
-.object-card:focus-visible {
-    background: #fafafa;
 }
 
 .object-card.active {
     border-color: var(--accent);
-    background: #f5f8ff;
 }
 
 .object-card.loading {
@@ -571,7 +565,7 @@ figure {
     width: 100%;
     height: 100%;
     border-radius: 12px;
-    background: #050505;
+    background: transparent;
     object-fit: contain;
 }
 
@@ -722,6 +716,7 @@ figure {
         flex-basis: 7.5rem;
         width: 7.5rem;
         height: 7.5rem;
+        padding: 0rem;
     }
 
 }
