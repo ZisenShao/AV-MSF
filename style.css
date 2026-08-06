@@ -149,7 +149,7 @@ body {
 .paragraph,
 .method-steps p {
     margin: 0.75rem 0;
-    font-size: 18px;
+    font-size: 16px;
     line-height: 1.65;
     text-align: left;
 }
@@ -172,7 +172,7 @@ figure {
 .figure-caption {
     margin-top: 0.9rem;
     color: #444;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 1.55;
     text-align: left;
 }
@@ -530,7 +530,7 @@ figure {
 .object-training-note {
     margin: 0.65rem 0 0;
     color: var(--muted);
-    font-size: 16px;
+    font-size: 14px;
     line-height: 1.4;
     text-align: center;
 }
