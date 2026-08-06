@@ -4,7 +4,7 @@
     --border: #d9d9d9;
     --demo-background: radial-gradient(circle at 50% 42%, #fff 0, #f5f6f8 55%, #e9ebef 100%);
     --muted: #666;
-    --page-max-width: 900px;
+    --page-max-width: 1000px;
     --text: #333;
 }
 
@@ -43,7 +43,7 @@ body {
     margin: 0;
     color: #4d4d4d;
     font-family: 'Varela Round', sans-serif;
-    font-size: clamp(2rem, 3.2vw, 5rem);
+    font-size: clamp(1.5rem, 3vw, 4.5rem);
     font-weight: 700;
     letter-spacing: 0.02em;
     line-height: 1.25;
@@ -91,7 +91,7 @@ body {
     margin-bottom: 10px;
     color: #333;
     font-family: 'Open Sans', sans-serif;
-    font-size: clamp(1.75rem, 3vw, 2.1rem);
+    font-size: clamp(1.5rem, 2.5vw, 1.8rem);
     font-weight: 500;
     letter-spacing: 0;
     line-height: 1.3;
@@ -112,6 +112,7 @@ body {
 .link-block {
     display: inline-block;
     max-width: 33%;
+    text-decoration: none;
 }
 
 .link-block figure {
@@ -139,7 +140,7 @@ body {
 .section-title {
     margin: 0 0 1rem;
     color: var(--text);
-    font-size: clamp(2rem, 3.2vw, 2.5rem);
+    font-size: clamp(1rem, 2.5vw, 2rem);
     font-weight: 600;
     line-height: 1.3;
     text-align: center;
@@ -529,7 +530,7 @@ figure {
 .object-training-note {
     margin: 0.65rem 0 0;
     color: var(--muted);
-    font-size: 0.82rem;
+    font-size: 16px;
     line-height: 1.4;
     text-align: center;
 }

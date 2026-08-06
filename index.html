@@ -30,7 +30,7 @@
         href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&amp;family=Varela+Round&amp;display=swap"
         rel="stylesheet"
     >
-    <link href="style.css?v=20260804-4" rel="stylesheet">
+    <link href="style.css?v=20260805-1" rel="stylesheet">
     <script type="importmap">
         {
             "imports": {
@@ -71,7 +71,12 @@
         </div>
 
         <div class="base-row add-top-padding" aria-label="Project links">
-            <div class="link-block" aria-disabled="true">
+            <a
+                class="link-block"
+                href="https://arxiv.org/abs/2608.05145"
+                target="_blank"
+                rel="noopener"
+            >
                 <figure>
                     <img
                         src="https://uploads-ssl.webflow.com/51e0d73d83d06baa7a00000f/5cab99df4998decfbf9e218e_paper-01.png"
@@ -83,8 +88,13 @@
                 <figcaption>
                     <strong class="link-labels-text">Paper</strong>
                 </figcaption>
-            </div>
-            <div class="link-block" aria-disabled="true">
+            </a>
+            <a
+                class="link-block"
+                href="https://github.com/ZisenShao/AV-MSF"
+                target="_blank"
+                rel="noopener"
+            >
                 <figure>
                     <img
                         src="https://uploads-ssl.webflow.com/51e0d73d83d06baa7a00000f/5cae3b53b42ebb3dd4175a82_68747470733a2f2f7777772e69636f6e66696e6465722e636f6d2f646174612f69636f6e732f6f637469636f6e732f313032342f6d61726b2d6769746875622d3235362e706e67.png"
@@ -95,7 +105,7 @@
                 <figcaption>
                     <strong class="link-labels-text">Code</strong>
                 </figcaption>
-            </div>
+            </a>
         </div>
     </header>
 
@@ -416,7 +426,7 @@
                 </button>
             </div>
             <p class="object-training-note">
-                All objects are trained using only 20% of the available impact recordings.
+                All objects are trained using only 20% of the available impact recordings (~6 shots).
             </p>
         </section>
 
