@@ -121,7 +121,7 @@ body {
     background: #363636;
     color: #fff;
     cursor: pointer;
-    font-size: clamp(1rem, 1.6667vw, 1.2rem);
+    font-size: clamp(0.75rem, 1.25vw, 0.9rem);
     line-height: 1.5;
     text-decoration: none;
     white-space: nowrap;
