@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+logs/
+
+results/
+output*/
+/sound/se/
+/data
+/blender
+
+*.pt
+*.json
+*.ply
+*.png
+*.wav

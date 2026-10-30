@@ -1,0 +1,41 @@
+name: train
+
+n_fft: 1024
+hop_length: 64
+n: 400
+
+seed: 42
+eval_seed: 42
+lr: 0.005
+max_steps: 20000
+warmup_steps: 2000
+eval_interval: 1000
+
+mag_weight: 1.0
+logmag_weight: 1.0
+cutoff_weight: 1.0
+cutoff_samples: 4410
+stft_fft_sizes: [2048, 1024, 512, 256]
+
+n_audio_clusters: 512
+q_pos_freqs: 10
+d_attn: null
+tau_feat: 1.0
+attn_lr_mult: 0.3
+context_norm: train
+
+q_lr: 3.0e-6
+k_lr: 3.0e-5
+v_lr: 1.0e-4
+point_mlp_lr: 1.0e-4
+gain_bias_lr_scale: 20.0
+damp_bias_lr_scale: 20.0
+
+cosine_per_group: true
+cosine_min_lrs:
+  q_proj: 3.0e-7
+  gain_mlp: 5.0e-4
+  damp_mlp: 5.0e-4
+
+damp_init_from_global: true
+gain_weight_init_zero: true
