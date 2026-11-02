@@ -5,6 +5,8 @@
 [![Video](https://img.shields.io/badge/YouTube-Video-red.svg?logo=youtube)](https://www.youtube.com/watch?v=LaNWn3mkHkY)
 [![BibTeX](https://img.shields.io/badge/Cite-BibTeX-lightgrey.svg)](#citation)
 
+https://github.com/user-attachments/assets/6c1da6f4-fa95-402d-b489-62c8a339956d
+
 ## Environment
 
 Python 3.10, CUDA 12.x.
